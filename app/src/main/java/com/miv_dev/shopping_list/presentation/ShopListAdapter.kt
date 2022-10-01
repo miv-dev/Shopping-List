@@ -18,6 +18,9 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemVH>() {
             notifyDataSetChanged()
         }
 
+    var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
+    var onShopItemClickListener: ((ShopItem) -> Unit)? = null
+
     class ShopItemVH(val view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.tv_name)
         val tvCount: TextView = view.findViewById(R.id.tv_count)
@@ -36,27 +39,20 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemVH>() {
     override fun onBindViewHolder(holder: ShopItemVH, position: Int) {
         val shopItem = shopList[position]
         holder.shopItemCard.isChecked = shopItem.enabled
-        val status = if (shopItem.enabled) {
-            "Active"
-        } else {
-            "Not active"
-        }
-        holder.tvName.text = "${shopItem.name} $status"
+
+        holder.tvName.text = shopItem.name
         holder.tvCount.text = "Count: ${shopItem.count}"
-        if (shopItem.enabled){
-            holder.tvName.setTextColor(ContextCompat.getColor(holder.view.context, android.R.color.holo_red_light))
+
+        holder.view.setOnLongClickListener {
+            onShopItemLongClickListener?.invoke(shopItem)
+            true
         }
-    }
-
-    override fun onViewRecycled(holder: ShopItemVH) {
-        super.onViewRecycled(holder)
-        holder.tvName.setTextColor(ContextCompat.getColor(holder.view.context, android.R.color.white))
-
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return position
+        holder.view.setOnClickListener {
+            onShopItemClickListener?.invoke(shopItem)
+        }
     }
 
     override fun getItemCount() = shopList.size
+
+
 }
