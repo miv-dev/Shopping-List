@@ -1,46 +1,28 @@
 package com.miv_dev.shopping_list.presentation
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.card.MaterialCardView
+import androidx.recyclerview.widget.ListAdapter
 import com.miv_dev.shopping_list.R
 import com.miv_dev.shopping_list.domain.ShopItem
 
-class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemVH>() {
+class ShopListAdapter : ListAdapter<ShopItem, ShopItemViewHolder>(ShopItemDiffCallback()) {
 
-    var shopList = listOf<ShopItem>()
-        set(value) {
-            val callback = ShopListDiffCallback(shopList, value)
-            val diffResult = DiffUtil.calculateDiff(callback)
-            diffResult.dispatchUpdatesTo(this)
-            field = value
-        }
 
     var onShopItemLongClickListener: ((ShopItem) -> Unit)? = null
     var onShopItemClickListener: ((ShopItem) -> Unit)? = null
 
-    class ShopItemVH(val view: View) : RecyclerView.ViewHolder(view) {
-        val tvName: TextView = view.findViewById(R.id.tv_name)
-        val tvCount: TextView = view.findViewById(R.id.tv_count)
-        val shopItemCard: MaterialCardView = view.findViewById(R.id.shop_item_card)
 
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemVH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShopItemViewHolder {
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_shop, parent, false)
-        return ShopItemVH(view)
+        return ShopItemViewHolder(view)
     }
 
 
-    override fun onBindViewHolder(holder: ShopItemVH, position: Int) {
-        val shopItem = shopList[position]
+    override fun onBindViewHolder(holder: ShopItemViewHolder, position: Int) {
+        val shopItem = getItem(position)
         holder.shopItemCard.isChecked = shopItem.enabled
 
         holder.tvName.text = shopItem.name
@@ -54,8 +36,5 @@ class ShopListAdapter : RecyclerView.Adapter<ShopListAdapter.ShopItemVH>() {
             onShopItemClickListener?.invoke(shopItem)
         }
     }
-
-    override fun getItemCount() = shopList.size
-
 
 }
