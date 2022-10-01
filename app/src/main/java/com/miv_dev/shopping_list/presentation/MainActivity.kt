@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
         vm.shopList.observe(this){
             Log.d("MainActivity", it.toString())
         }
-        vm.getShopList()
     }
 
 }
