@@ -4,6 +4,8 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
+    <string name="name_error">Invalid Name</string>
+    <string name="count_error">Invalid Count</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -37,4 +39,8 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus vestibulum. Fusce
         dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="add_new_shop_item">Add new shop item</string>
+    <string name="save">Save</string>
+    <string name="hint_count">Count:</string>
+    <string name="hint_name">Name:</string>
 </resources>
