@@ -1,13 +1,12 @@
 package com.miv_dev.shopping_list.presentation
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.miv_dev.shopping_list.R
-import com.miv_dev.shopping_list.domain.ShopItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,6 +21,11 @@ class MainActivity : AppCompatActivity() {
         vm.shopList.observe(this) {
             adapter.submitList(it)
         }
+        val fabAddShopItem = findViewById<FloatingActionButton>(R.id.fab_add_shop_item)
+        fabAddShopItem.setOnClickListener {
+            val intent = ShopItemActivity.newIntentAddItem(this)
+            startActivity(intent)
+        }
     }
 
     private fun setupRecyclerView() {
@@ -33,7 +37,8 @@ class MainActivity : AppCompatActivity() {
             vm.changeEnableState(it)
         }
         adapter.onShopItemClickListener = {
-            Log.d("MainActivity", "setupRecyclerView: Edit $it")
+            val intent = ShopItemActivity.newIntentEditItem(this, it.id)
+            startActivity(intent)
         }
 
         setupSwipeListener(rvShopList)
